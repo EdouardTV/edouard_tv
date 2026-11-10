@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La collection d'Edouard</title>
+<meta name="description" content="Chaque animal que je trouve et que je photographie entre dans la collection : liste, carte des observations et top 10.">
+<meta name="theme-color" content="#1C2A23">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="masthead wrap">
+  <div>
+    <a class="site-title" id="site-title" href="#collection">La collection d'Edouard</a>
+    <p class="site-sub" id="site-sub"></p>
+  </div>
+  <nav class="socials" id="socials" aria-label="Mes réseaux"></nav>
+</header>
+
+<section class="latest wrap" id="latest" aria-label="Dernière entrée dans la collection"></section>
+
+<nav class="tabs" aria-label="Rubriques">
+  <div class="wrap tabs-inner">
+    <a href="#collection" data-view="collection">Collection</a>
+    <a href="#carte" data-view="carte">Carte</a>
+    <a href="#top10" data-view="top10">Top 10</a>
+  </div>
+</nav>
+
+<main id="contenu" class="wrap">
+  <p class="notice" id="load-error" hidden>Impossible de charger la collection. Vérifie ta connexion puis recharge la page.</p>
+
+  <section id="view-collection" class="view" aria-labelledby="h-collection">
+    <h2 id="h-collection" class="view-title">La collection</h2>
+    <form class="filters" id="filters" role="search" onsubmit="return false">
+      <label class="f-search">
+        <span>Rechercher</span>
+        <input type="search" id="f-q" placeholder="Nom ou nom scientifique" autocomplete="off">
+      </label>
+      <details class="more" id="more">
+        <summary id="more-sum">Filtres et tri</summary>
+        <div class="more-grid">
+          <label><span>Groupe</span><select id="f-groupe"></select></label>
+          <label><span>Ordre</span><select id="f-ordre"></select></label>
+          <label><span>Famille</span><select id="f-famille"></select></label>
+          <label><span>Lieu</span><select id="f-lieu"></select></label>
+          <label><span>Pays</span><select id="f-pays"></select></label>
+          <label><span>Trier par</span>
+            <select id="f-tri">
+              <option value="num">Numéro croissant</option>
+              <option value="num-desc">Numéro décroissant</option>
+              <option value="nom">Nom</option>
+              <option value="vus">Les plus vus</option>
+              <option value="recent">Vus récemment</option>
+            </select>
+          </label>
+        </div>
+      </details>
+    </form>
+    <div class="result-bar">
+      <p id="result-count" aria-live="polite"></p>
+      <button type="button" class="link-btn" id="f-reset" hidden>Effacer les filtres</button>
+    </div>
+    <ul class="grid" id="grid"></ul>
+  </section>
+
+  <section id="view-carte" class="view" aria-labelledby="h-carte" hidden>
+    <h2 id="h-carte" class="view-title">La carte des observations</h2>
+    <p class="lede">Les lieux sont indiqués par zone, jamais au point près, pour ne pas déranger les animaux.</p>
+    <div class="map" id="map" role="region" aria-label="Carte des zones d'observation"></div>
+    <ul class="zones" id="zones"></ul>
+  </section>
+
+  <section id="view-top10" class="view" aria-labelledby="h-top10" hidden>
+    <h2 id="h-top10" class="view-title">Mon top 10</h2>
+    <p class="lede">Les rencontres qui m'ont le plus marqué.</p>
+    <ol class="top" id="top"></ol>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <p id="maj"></p>
+</footer>
+
+<dialog class="detail" id="detail" aria-labelledby="d-name"></dialog>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

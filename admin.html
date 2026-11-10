@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Gérer la collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="wrap adm-head">
+  <h1 class="adm-title">Gérer la collection</h1>
+  <a class="btn btn-ghost btn-small" href="./" target="_blank" rel="noopener">Voir le site</a>
+</header>
+
+<!-- Connexion -->
+<main class="wrap" id="login-view">
+  <section class="panel">
+    <h2>Connexion</h2>
+    <p class="help">Les modifications sont enregistrées directement dans ton dépôt GitHub. Il faut un jeton d'accès limité à ce dépôt (voir le guide, étape 5). Il reste sur cet appareil et n'est envoyé qu'à GitHub.</p>
+    <form id="login-form" class="fields">
+      <label class="field"><span>Nom d'utilisateur GitHub</span><input id="l-owner" required autocomplete="username" autocapitalize="off"></label>
+      <label class="field"><span>Nom du dépôt</span><input id="l-repo" required autocapitalize="off"></label>
+      <label class="field"><span>Branche</span><input id="l-branch" value="main" required autocapitalize="off"></label>
+      <label class="field"><span>Jeton d'accès</span><input id="l-token" type="password" required autocomplete="off"></label>
+      <label class="full" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="l-remember" checked> Se souvenir de moi sur cet appareil</label>
+      <div class="full row-actions"><button class="btn" type="submit">Se connecter</button></div>
+      <p class="full status" id="login-status" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<!-- Application -->
+<div id="app-view" hidden>
+  <div class="adm-bar">
+    <div class="wrap">
+      <p id="save-state" role="status">Tout est enregistré.</p>
+      <button class="btn btn-small" id="save-btn" type="button" disabled>Enregistrer</button>
+    </div>
+  </div>
+  <main class="wrap">
+    <div class="adm-tabs" role="tablist">
+      <button type="button" role="tab" data-tab="especes" aria-selected="true">Espèces</button>
+      <button type="button" role="tab" data-tab="top" aria-selected="false">Top 10</button>
+      <button type="button" role="tab" data-tab="lieux" aria-selected="false">Lieux</button>
+      <button type="button" role="tab" data-tab="reglages" aria-selected="false">Réglages</button>
+    </div>
+
+    <section data-panel="especes">
+      <div id="sp-editor"></div>
+      <div class="panel">
+        <h2>Les espèces</h2>
+        <div class="row-actions" style="margin-top:0">
+          <button class="btn" type="button" id="add-sp">Ajouter une espèce</button>
+        </div>
+        <label class="field" style="margin-top:12px"><span>Rechercher</span><input type="search" id="sp-q" placeholder="Nom ou numéro"></label>
+        <ul class="sp-list" id="sp-list"></ul>
+      </div>
+    </section>
+
+    <section data-panel="top" hidden>
+      <div class="panel">
+        <h2>Top 10</h2>
+        <p class="help">Choisis les espèces dans l'ordre, de la 1re à la 10e place. Laisse vide les places que tu ne veux pas remplir.</p>
+        <div id="top-slots"></div>
+        <p class="status" id="top-warn"></p>
+      </div>
+    </section>
+
+    <section data-panel="lieux" hidden>
+      <div class="panel">
+        <h2>Lieux</h2>
+        <p class="help">Un lieu correspond à une zone (une forêt, une rivière, une région), pas à un point précis. Pour placer un lieu, appuie sur « Placer sur la carte » puis touche la carte : la position est arrondie à environ 1 km.</p>
+        <div id="lieux-list"></div>
+        <div class="row-actions"><button class="btn btn-ghost" type="button" id="add-lieu">Ajouter un lieu</button></div>
+        <div class="mini-map" id="mini-map"></div>
+      </div>
+    </section>
+
+    <section data-panel="reglages" hidden>
+      <div class="panel">
+        <h2>Le site</h2>
+        <div class="fields">
+          <label class="field full"><span>Titre</span><input data-site="titre"></label>
+          <label class="field full"><span>Phrase de présentation</span><input data-site="sousTitre"></label>
+          <label class="field"><span>Lien TikTok</span><input data-site="tiktok" type="url" inputmode="url"></label>
+          <label class="field"><span>Lien YouTube</span><input data-site="youtube" type="url" inputmode="url"></label>
+          <label class="field"><span>Lien Instagram</span><input data-site="instagram" type="url" inputmode="url"></label>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Décaler les numéros</h2>
+        <p class="help">Utile si tu insères une espèce oubliée ou si tu retires un numéro. Toutes les espèces à partir du numéro choisi sont décalées.</p>
+        <div class="fields">
+          <label class="field"><span>À partir du numéro</span><input id="shift-from" type="number" min="1" inputmode="numeric"></label>
+          <label class="field"><span>Décalage</span>
+            <select id="shift-by"><option value="1">+1 (libère ce numéro)</option><option value="-1">-1 (recule d'un cran)</option></select>
+          </label>
+        </div>
+        <div class="row-actions"><button class="btn btn-ghost" type="button" id="shift-btn">Décaler</button></div>
+        <p class="status" id="shift-status"></p>
+      </div>
+      <div class="panel">
+        <h2>Sauvegarde et compte</h2>
+        <div class="row-actions" style="margin-top:0">
+          <button class="btn btn-ghost" type="button" id="backup-btn">Télécharger une sauvegarde</button>
+          <button class="btn btn-danger" type="button" id="logout-btn">Se déconnecter de cet appareil</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<datalist id="dl-groupe"></datalist>
+<datalist id="dl-ordre"></datalist>
+<datalist id="dl-famille"></datalist>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>
