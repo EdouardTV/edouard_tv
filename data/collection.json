@@ -16,18 +16,11 @@
       "lon": 145.42
     },
     {
-      "id": "daintree-river",
-      "nom": "Daintree River",
-      "pays": "Australie",
-      "lat": -16.28,
-      "lon": 145.4
-    },
-    {
       "id": "julatten",
       "nom": "Nord Tropical Queensland",
       "pays": "Australie",
-      "lat": -16.61,
-      "lon": 145.34
+      "lat": -16.48,
+      "lon": 145.46
     },
     {
       "id": "tablelands",
