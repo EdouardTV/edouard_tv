@@ -57,22 +57,22 @@
     }).length;
     var first = C.firstDate(sp);
     box.appendChild(el("button", { type: "button", class: "latest-card", onclick: function () { go("#n" + C.pad(sp.numero)); } }, [
-      el("div", { class: "latest-photo" }, [photoNode(sp, "latest-img"), tag(sp, "tag-lg")]),
       el("div", { class: "latest-text" }, [
-        el("p", { class: "latest-kicker", text: "Dernière entrée" }),
+        el("p", { class: "latest-kicker" }, ["Dernière entrée ", tag(sp, "tag-inline")]),
         el("p", { class: "latest-name", text: sp.nom }),
         sp.nomScientifique ? el("p", { class: "sci", text: sp.nomScientifique }) : null,
         el("p", { class: "latest-meta", text: [placeText(sp), C.fmtDate(first)].filter(Boolean).join(", le ") })
-      ])
+      ]),
+      el("div", { class: "latest-photo" }, [photoNode(sp, "latest-img")])
     ]));
     box.appendChild(el("p", { class: "tally" }, [
       el("strong", { text: C.plural(especes.length, "espèce", "espèces") }),
-      " dans la collection, " + C.plural(nObs, "observation", "observations") + " dans " + C.plural(nLieux, "lieu", "lieux") + "."
+      ", " + C.plural(nObs, "observation", "observations") + ", " + C.plural(nLieux, "lieu", "lieux") + "."
     ]));
   }
 
   /* ---------- Collection ---------- */
-  var F = { q: "", groupe: "", ordre: "", famille: "", lieu: "", pays: "", tri: "num" };
+  var F = { q: "", groupe: "", lieu: "", pays: "", tri: "num" };
 
   function uniq(values) {
     return values.filter(function (v, i, a) { return v && a.indexOf(v) === i; })
@@ -92,25 +92,41 @@
 
   function setupFilters() {
     fillSelect("#f-groupe", "Tous les groupes", uniq(especes.map(function (s) { return s.groupe; })));
-    fillSelect("#f-ordre", "Tous les ordres", uniq(especes.map(function (s) { return s.ordre; })));
-    fillSelect("#f-famille", "Toutes les familles", uniq(especes.map(function (s) { return s.famille; })));
-    var used = data.lieux.filter(function (l) { return especes.some(function (s) { return C.lieuIds(s).indexOf(l.id) !== -1; }); });
-    fillSelect("#f-lieu", "Tous les lieux", used.map(function (l) { return [l.id, l.nom]; })
-      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); }));
-    fillSelect("#f-pays", "Tous les pays", uniq(used.map(function (l) { return l.pays; })));
+    fillSelect("#f-pays", "Tous les pays", uniq(usedLieux().map(function (l) { return l.pays; })));
+    fillLieux();
 
     var bind = function (id, key, ev) {
       $(id).addEventListener(ev || "change", function (e) { F[key] = e.target.value; renderGrid(); });
     };
-    bind("#f-q", "q", "input"); bind("#f-groupe", "groupe"); bind("#f-ordre", "ordre");
-    bind("#f-famille", "famille"); bind("#f-lieu", "lieu"); bind("#f-pays", "pays"); bind("#f-tri", "tri");
+    bind("#f-q", "q", "input"); bind("#f-groupe", "groupe"); bind("#f-lieu", "lieu"); bind("#f-tri", "tri");
+    $("#f-pays").addEventListener("change", function (e) {
+      F.pays = e.target.value;
+      fillLieux();
+      if (F.lieu && (!lieux[F.lieu] || (F.pays && lieux[F.lieu].pays !== F.pays))) { F.lieu = ""; $("#f-lieu").value = ""; }
+      renderGrid();
+    });
     $("#f-reset").addEventListener("click", resetFilters);
-    if (window.matchMedia && window.matchMedia("(min-width: 760px)").matches) $("#more").open = true;
+    var setMore = function (open) { $("#more").hidden = !open; $("#more-btn").setAttribute("aria-expanded", open ? "true" : "false"); };
+    $("#more-btn").addEventListener("click", function () { setMore($("#more").hidden); });
+    if (window.matchMedia && window.matchMedia("(min-width: 760px)").matches) setMore(true);
+  }
+
+  function usedLieux() {
+    return data.lieux.filter(function (l) { return especes.some(function (s) { return C.lieuIds(s).indexOf(l.id) !== -1; }); });
+  }
+
+  /* La liste des lieux se limite au pays choisi. */
+  function fillLieux() {
+    fillSelect("#f-lieu", "Tous les lieux", usedLieux()
+      .filter(function (l) { return !F.pays || l.pays === F.pays; })
+      .map(function (l) { return [l.id, l.nom]; })
+      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); }));
   }
 
   function resetFilters() {
     Object.keys(F).forEach(function (k) { F[k] = k === "tri" ? "num" : ""; });
-    ["q", "groupe", "ordre", "famille", "lieu", "pays"].forEach(function (k) { $("#f-" + k).value = ""; });
+    ["q", "groupe", "pays"].forEach(function (k) { $("#f-" + k).value = ""; });
+    fillLieux(); $("#f-lieu").value = "";
     $("#f-tri").value = "num";
     renderGrid();
   }
@@ -122,8 +138,6 @@
     var list = especes.filter(function (s) {
       if (q && fold(s.nom + " " + s.nomScientifique + " " + C.pad(s.numero)).indexOf(q) === -1) return false;
       if (F.groupe && s.groupe !== F.groupe) return false;
-      if (F.ordre && s.ordre !== F.ordre) return false;
-      if (F.famille && s.famille !== F.famille) return false;
       var ids = C.lieuIds(s);
       if (F.lieu && ids.indexOf(F.lieu) === -1) return false;
       if (F.pays && !ids.some(function (id) { return lieux[id] && lieux[id].pays === F.pays; })) return false;
@@ -155,9 +169,9 @@
   function renderGrid() {
     var list = filtered(), grid = $("#grid");
     grid.textContent = "";
-    var active = F.q || F.groupe || F.ordre || F.famille || F.lieu || F.pays;
-    var nSel = ["groupe", "ordre", "famille", "lieu", "pays"].filter(function (k) { return F[k]; }).length;
-    $("#more-sum").textContent = nSel ? "Filtres et tri (" + nSel + " actif" + (nSel > 1 ? "s" : "") + ")" : "Filtres et tri";
+    var active = F.q || F.groupe || F.lieu || F.pays;
+    var nSel = ["groupe", "lieu", "pays"].filter(function (k) { return F[k]; }).length;
+    $("#more-btn").textContent = nSel ? "Filtres (" + nSel + ")" : "Filtres";
     $("#f-reset").hidden = !active;
     $("#result-count").textContent = active
       ? list.length + " sur " + C.plural(especes.length, "espèce", "espèces")
@@ -228,10 +242,57 @@
     return especes.filter(function (s) { return C.lieuIds(s).indexOf(lieuId) !== -1; }).sort(C.byNumero);
   }
 
+  /* Carte par pays : "" = tous les pays. Par défaut, le pays de la dernière entrée. */
+  var mapCountry = null;
+
+  function mapCountries() {
+    return usedLieux().map(function (l) { return l.pays || ""; })
+      .filter(function (v, i, a) { return v && a.indexOf(v) === i; })
+      .sort(function (a, b) { return a.localeCompare(b, "fr"); });
+  }
+
+  function defaultCountry() {
+    var countries = mapCountries();
+    if (countries.length < 2) return "";
+    var latest = especes.slice().sort(function (a, b) {
+      return C.lastDate(b).localeCompare(C.lastDate(a)) || C.byNumero(b, a);
+    })[0];
+    var obs = latest && latest.observations.filter(function (o) { return o.lieu && lieux[o.lieu]; })
+      .sort(function (a, b) { return (b.date || "").localeCompare(a.date || ""); })[0];
+    return obs && lieux[obs.lieu].pays ? lieux[obs.lieu].pays : "";
+  }
+
+  function renderCountryButtons() {
+    var box = $("#map-countries"), countries = mapCountries();
+    box.textContent = "";
+    box.hidden = countries.length < 2;
+    if (box.hidden) return;
+    [""].concat(countries).forEach(function (c) {
+      box.appendChild(el("button", {
+        type: "button", class: "chip-btn", "aria-pressed": c === mapCountry ? "true" : "false",
+        text: c || "Tous les pays", onclick: function () { mapCountry = c; renderCountryButtons(); renderZones(); fitMap(); }
+      }));
+    });
+  }
+
+  function lieuxShown() {
+    return usedLieux().filter(function (l) { return !mapCountry || l.pays === mapCountry; });
+  }
+
+  function fitMap() {
+    if (!map) return;
+    var pts = lieuxShown().filter(function (l) { return typeof l.lat === "number" && typeof l.lon === "number"; })
+      .map(function (l) { return [l.lat, l.lon]; });
+    if (pts.length > 1) map.fitBounds(pts, { padding: [40, 40], maxZoom: 10 });
+    else if (pts.length === 1) map.setView(pts[0], 9);
+    else map.setView([0, 0], 2);
+  }
+
   function renderZones() {
+    if (mapCountry === null) mapCountry = defaultCountry();
     var ul = $("#zones");
     ul.textContent = "";
-    data.lieux.forEach(function (l) {
+    lieuxShown().forEach(function (l) {
       var list = speciesAt(l.id);
       if (!list.length) return;
       ul.appendChild(el("li", { class: "zone" }, [
@@ -269,9 +330,7 @@
       m.bindPopup(pop, { maxHeight: 260 });
       m.bindTooltip(l.nom + ", " + C.plural(list.length, "espèce", "espèces"));
     });
-    if (pts.length > 1) map.fitBounds(pts, { padding: [40, 40] });
-    else if (pts.length === 1) map.setView(pts[0], 10);
-    else map.setView([0, 0], 2);
+    fitMap();
   }
 
   /* ---------- Top 10 ---------- */
@@ -336,7 +395,7 @@
         data = C.normalize(json);
         lieux = C.lieuxById(data);
         especes = data.especes;
-        renderHeader(); renderLatest(); setupFilters(); renderGrid(); renderZones(); renderTop();
+        renderHeader(); renderLatest(); setupFilters(); renderGrid(); renderZones(); renderCountryButtons(); renderTop();
         window.addEventListener("hashchange", route);
         route();
       })

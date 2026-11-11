@@ -37,20 +37,23 @@
   <p class="notice" id="load-error" hidden>Impossible de charger la collection. Vérifie ta connexion puis recharge la page.</p>
 
   <section id="view-collection" class="view" aria-labelledby="h-collection">
-    <h2 id="h-collection" class="view-title">La collection</h2>
+    <div class="view-head">
+      <h2 id="h-collection" class="view-title">La collection</h2>
+      <p id="result-count" aria-live="polite"></p>
+    </div>
     <form class="filters" id="filters" role="search" onsubmit="return false">
-      <label class="f-search">
-        <span>Rechercher</span>
-        <input type="search" id="f-q" placeholder="Nom ou nom scientifique" autocomplete="off">
-      </label>
-      <details class="more" id="more">
-        <summary id="more-sum">Filtres et tri</summary>
+      <div class="search-row">
+        <label class="f-search">
+          <span class="sr-only">Rechercher</span>
+          <input type="search" id="f-q" placeholder="Rechercher un animal" autocomplete="off">
+        </label>
+        <button type="button" class="filter-toggle" id="more-btn" aria-expanded="false" aria-controls="more">Filtres</button>
+      </div>
+      <div class="more" id="more" hidden>
         <div class="more-grid">
           <label><span>Groupe</span><select id="f-groupe"></select></label>
-          <label><span>Ordre</span><select id="f-ordre"></select></label>
-          <label><span>Famille</span><select id="f-famille"></select></label>
-          <label><span>Lieu</span><select id="f-lieu"></select></label>
           <label><span>Pays</span><select id="f-pays"></select></label>
+          <label><span>Lieu</span><select id="f-lieu"></select></label>
           <label><span>Trier par</span>
             <select id="f-tri">
               <option value="num">Numéro croissant</option>
@@ -61,10 +64,9 @@
             </select>
           </label>
         </div>
-      </details>
+      </div>
     </form>
     <div class="result-bar">
-      <p id="result-count" aria-live="polite"></p>
       <button type="button" class="link-btn" id="f-reset" hidden>Effacer les filtres</button>
     </div>
     <ul class="grid" id="grid"></ul>
@@ -73,6 +75,7 @@
   <section id="view-carte" class="view" aria-labelledby="h-carte" hidden>
     <h2 id="h-carte" class="view-title">La carte des observations</h2>
     <p class="lede">Les lieux sont indiqués par zone, jamais au point près, pour ne pas déranger les animaux.</p>
+    <div class="map-countries" id="map-countries" role="group" aria-label="Choisir un pays" hidden></div>
     <div class="map" id="map" role="region" aria-label="Carte des zones d'observation"></div>
     <ul class="zones" id="zones"></ul>
   </section>
