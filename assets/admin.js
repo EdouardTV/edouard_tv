@@ -178,7 +178,7 @@
   }
 
   function renderAll() {
-    renderDatalists(); renderList(); renderEditor(); renderTop(); renderLieux(); renderSite();
+    refreshPaysList(); renderDatalists(); renderList(); renderEditor(); renderTop(); renderLieux(); renderSite();
   }
 
   function renderDatalists() {
@@ -232,9 +232,68 @@
     var s = el("select");
     s.appendChild(el("option", { value: "", text: "Lieu non renseigné" }));
     data.lieux.forEach(function (l) { s.appendChild(el("option", { value: l.id, text: l.nom + (l.pays ? " (" + l.pays + ")" : "") })); });
+    s.appendChild(el("option", { value: "__new", text: "+ Nouveau lieu…" }));
     s.value = value || "";
     s.addEventListener("change", function () { onchange(s.value); });
     return s;
+  }
+
+  /* Liste des pays déjà utilisés, proposée quand on tape un pays. */
+  function refreshPaysList() {
+    var dl = $("#dl-pays");
+    if (!dl) { dl = el("datalist", { id: "dl-pays" }); document.body.appendChild(dl); }
+    dl.textContent = "";
+    data.lieux.map(function (l) { return l.pays; })
+      .filter(function (v, i, a) { return v && a.indexOf(v) === i; })
+      .sort(function (a, b) { return a.localeCompare(b, "fr"); })
+      .forEach(function (v) { dl.appendChild(el("option", { value: v })); });
+  }
+
+  /* Crée un lieu (ou réutilise celui qui porte déjà ce nom dans ce pays) et renvoie son id. */
+  function createLieu(nom, pays) {
+    var key = function (s) { return String(s || "").trim().toLowerCase(); };
+    var same = data.lieux.filter(function (l) { return key(l.nom) === key(nom) && key(l.pays) === key(pays); })[0];
+    if (same) return { id: same.id, existed: true };
+    var l = { id: C.slug(nom) + "-" + Date.now().toString(36), nom: nom.trim(), pays: pays.trim(), lat: null, lon: null };
+    data.lieux.push(l);
+    return { id: l.id, existed: false };
+  }
+
+  /* Petit formulaire affiché sous une observation quand on choisit « Nouveau lieu ». */
+  function newLieuForm(o, previous, onDone) {
+    refreshPaysList();
+    var prevLieu = data.lieux.filter(function (l) { return l.id === previous; })[0];
+    var nom = el("input", { placeholder: "Ex. Nouméa", autocapitalize: "sentences" });
+    var pays = el("input", { list: "dl-pays", placeholder: "Ex. Nouvelle-Calédonie" });
+    pays.value = prevLieu && prevLieu.pays ? prevLieu.pays : "";
+    var msg = el("p", { class: "status" });
+    var box = el("div", { class: "new-lieu" }, [
+      el("p", { class: "new-lieu-title", text: "Nouveau lieu" }),
+      el("div", { class: "lieu-grid" }, [
+        el("label", { class: "field" }, [el("span", { text: "Nom du lieu" }), nom]),
+        el("label", { class: "field" }, [el("span", { text: "Pays" }), pays])
+      ]),
+      el("p", { class: "help", text: "Écris le pays toujours de la même façon (la liste propose ceux déjà utilisés)." }),
+      el("div", { class: "row-actions", style: "margin-top:4px" }, [
+        el("button", {
+          type: "button", class: "btn btn-small", text: "Créer le lieu",
+          onclick: function () {
+            if (!nom.value.trim()) { msg.className = "status err"; msg.textContent = "Indique le nom du lieu."; nom.focus(); return; }
+            if (!pays.value.trim()) { msg.className = "status err"; msg.textContent = "Indique le pays."; pays.focus(); return; }
+            var r = createLieu(nom.value, pays.value);
+            o.lieu = r.id; changed();
+            renderLieux(); drawMini(); refreshPaysList();
+            toast(r.existed ? "Ce lieu existait déjà : il est sélectionné."
+              : "Lieu créé. Pour qu'il apparaisse sur la carte, place-le dans l'onglet Lieux, puis enregistre.");
+            onDone();
+          }
+        }),
+        el("button", { type: "button", class: "btn btn-ghost btn-small", text: "Annuler", onclick: function () { o.lieu = previous; onDone(); } })
+      ]),
+      msg
+    ]);
+    setTimeout(function () { nom.focus(); }, 0);
+    return box;
   }
 
   function renderEditor() {
@@ -300,9 +359,20 @@
         date.addEventListener("input", function () { o.date = date.value; changed(); });
         var vid = el("input", { type: "url", inputmode: "url", placeholder: "Lien de la vidéo", value: o.video || "" }); vid.value = o.video || "";
         vid.addEventListener("input", function () { o.video = vid.value.trim(); changed(); });
-        obsBox.appendChild(el("div", { class: "obs-row" }, [
+        var row;
+        var sel = lieuSelect(o.lieu, function (v) {
+          if (v === "__new") {
+            var previous = o.lieu;
+            if (row.querySelector(".new-lieu")) return;
+            row.appendChild(newLieuForm(o, previous, renderObs));
+            return;
+          }
+          o.lieu = v; changed();
+          var open = row.querySelector(".new-lieu"); if (open) open.remove();
+        });
+        row = el("div", { class: "obs-row" }, [
           el("label", { class: "field" }, [el("span", { text: "Date" }), date]),
-          el("label", { class: "field" }, [el("span", { text: "Lieu" }), lieuSelect(o.lieu, function (v) { o.lieu = v; changed(); })]),
+          el("label", { class: "field" }, [el("span", { text: "Lieu" }), sel]),
           el("label", { class: "field" }, [el("span", { text: "Vidéo" }), vid]),
           el("button", {
             type: "button", class: "btn btn-danger btn-small", text: "Supprimer",
@@ -311,7 +381,8 @@
               sp.observations.splice(i, 1); changed(); renderObs();
             }
           })
-        ]));
+        ]);
+        obsBox.appendChild(row);
       });
       if (!sp.observations.length) obsBox.appendChild(el("p", { class: "help", text: "Aucune observation. Ajoute au moins la première rencontre." }));
     }
@@ -448,7 +519,8 @@
       lon.addEventListener("input", function () { l.lon = lon.value === "" ? null : parseFloat(lon.value); changed(); drawMini(); });
       var nom = el("input"); nom.value = l.nom || "";
       nom.addEventListener("input", function () { l.nom = nom.value; changed(); drawMini(); });
-      var pays = el("input"); pays.value = l.pays || "";
+      var pays = el("input", { list: "dl-pays" }); pays.value = l.pays || "";
+      var noCoords = typeof l.lat !== "number" || typeof l.lon !== "number" || isNaN(l.lat) || isNaN(l.lon);
       pays.addEventListener("input", function () { l.pays = pays.value; changed(); });
       box.appendChild(el("div", { class: "lieu-row" + (pickLieuId === l.id ? " picking" : "") }, [
         el("div", { class: "lieu-grid" }, [
@@ -458,6 +530,7 @@
           el("label", { class: "field" }, [el("span", { text: "Longitude" }), lon])
         ]),
         el("p", { class: "help", text: C.plural(n, "observation", "observations") + " dans ce lieu." }),
+        noCoords ? el("p", { class: "status warn", text: "Pas encore placé : ce lieu n'apparaît pas sur la carte publique. Appuie sur « Placer sur la carte »." }) : null,
         el("div", { class: "row-actions", style: "margin-top:4px" }, [
           el("button", {
             type: "button", class: "btn btn-ghost btn-small", text: pickLieuId === l.id ? "Touche la carte…" : "Placer sur la carte",

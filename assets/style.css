@@ -330,3 +330,5 @@ main.wrap { padding-top: 26px; padding-bottom: 40px; min-height: 50vh; }
 .warn { color: var(--danger); font-weight: 600; }
 .latest-photo .ph-txt { display: none; }
 .map-countries .chip-btn { font-size: 0.9rem; min-height: 36px; padding: 4px 12px; }
+.new-lieu { grid-column: 1 / -1; background: var(--surface); border: 1.5px solid var(--tag); border-radius: var(--r-sm); padding: 12px; }
+.new-lieu-title { margin: 0 0 8px; font: 700 1.2rem/1 var(--display); }
