@@ -5,7 +5,7 @@
     "tiktok": "https://www.tiktok.com/@edouard_tv",
     "youtube": "https://www.youtube.com/@edouard_tv",
     "instagram": "https://www.instagram.com/edouard_tv/",
-    "maj": "2026-11-11"
+    "maj": "2026-11-13"
   },
   "lieux": [
     {
@@ -130,6 +130,11 @@
           "date": "2026-08-13",
           "lieu": "foret-daintree",
           "video": "https://vm.tiktok.com/ZN8PyC1Jd/"
+        },
+        {
+          "date": "2026-11-11",
+          "lieu": "foret-daintree",
+          "video": "https://vm.tiktok.com/ZN851omFc/"
         }
       ]
     },
