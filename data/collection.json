@@ -550,6 +550,23 @@
           "video": "https://vm.tiktok.com/ZN85GNn4A/"
         }
       ]
+    },
+    {
+      "id": "emwitdv1f",
+      "numero": 30,
+      "nom": "Monarque à lunettes ",
+      "nomScientifique": "Symphosiachrus trivirgatus",
+      "groupe": "Oiseaux",
+      "ordre": "Passériformes",
+      "famille": "Monarchidae",
+      "photo": "photos/030-monarque-a-lunettes-mwitfkma.jpg",
+      "observations": [
+        {
+          "date": "2026-11-16",
+          "lieu": "foret-daintree",
+          "video": ""
+        }
+      ]
     }
   ],
   "top10": [
