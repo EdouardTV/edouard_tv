@@ -589,16 +589,16 @@
       "id": "emwitlp9f",
       "numero": 32,
       "nom": "Méliphage Cryptique",
-      "nomScientifique": "",
-      "groupe": "",
-      "ordre": "",
-      "famille": "",
+      "nomScientifique": "Microptilotis imitatrix",
+      "groupe": "Oiseaux",
+      "ordre": "Passériformes",
+      "famille": "Meliphagidae",
       "photo": "photos/032-meliphage-cryptique-mwitmxlc.jpg",
       "observations": [
         {
-          "date": "2026-11-16",
+          "date": "2026-11-15",
           "lieu": "foret-daintree",
-          "video": ""
+          "video": "https://vm.tiktok.com/ZN85GNn4A/"
         }
       ]
     }
