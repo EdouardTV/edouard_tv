@@ -601,6 +601,23 @@
           "video": "https://vm.tiktok.com/ZN85GNn4A/"
         }
       ]
+    },
+    {
+      "id": "emwitqq3s",
+      "numero": 33,
+      "nom": "Tortue verte ",
+      "nomScientifique": "Chelonia mydas",
+      "groupe": "Reptiles",
+      "ordre": "Testudines",
+      "famille": "Cheloniidae",
+      "photo": "photos/033-tortue-verte-mwitt9qa.jpg",
+      "observations": [
+        {
+          "date": "2026-11-15",
+          "lieu": "foret-daintree",
+          "video": "https://vm.tiktok.com/ZN85GNn4A/"
+        }
+      ]
     }
   ],
   "top10": [
