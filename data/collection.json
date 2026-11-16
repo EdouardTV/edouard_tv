@@ -567,6 +567,23 @@
           "video": "https://vm.tiktok.com/ZN85GNn4A/"
         }
       ]
+    },
+    {
+      "id": "emwitiex6",
+      "numero": 31,
+      "nom": "Demoiselle",
+      "nomScientifique": "Podopteryx selysi",
+      "groupe": "Insectes",
+      "ordre": "Odonata",
+      "famille": "Argiolestidae",
+      "photo": "photos/031-demoiselle-mwitkgke.jpg",
+      "observations": [
+        {
+          "date": "2026-11-16",
+          "lieu": "foret-daintree",
+          "video": ""
+        }
+      ]
     }
   ],
   "top10": [
