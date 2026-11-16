@@ -5,7 +5,7 @@
     "tiktok": "https://www.tiktok.com/@edouard_tv",
     "youtube": "https://www.youtube.com/@edouard_tv",
     "instagram": "https://www.instagram.com/edouard_tv/",
-    "maj": "2026-11-13"
+    "maj": "2026-11-16"
   },
   "lieux": [
     {
@@ -526,6 +526,23 @@
           "date": "2026-11-10",
           "lieu": "foret-daintree",
           "video": "https://vm.tiktok.com/ZN8PfJt5s/"
+        }
+      ]
+    },
+    {
+      "id": "emwit7hfd",
+      "numero": 29,
+      "nom": "Ptilope Magnifique",
+      "nomScientifique": "Ptilinopus magnificus",
+      "groupe": "Oiseaux",
+      "ordre": "Columbiformes",
+      "famille": "Columbidae",
+      "photo": "photos/029-ptilope-magnifique-mwit9gk0.jpg",
+      "observations": [
+        {
+          "date": "2026-11-16",
+          "lieu": "foret-daintree",
+          "video": ""
         }
       ]
     }
