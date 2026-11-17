@@ -684,6 +684,23 @@
           "video": "https://vm.tiktok.com/ZN8aSmaaw/"
         }
       ]
+    },
+    {
+      "id": "emwl5yzut",
+      "numero": 37,
+      "nom": "Souimanga à moustaches",
+      "nomScientifique": "Cinnyris frenatus",
+      "groupe": "Oiseaux",
+      "ordre": "Passériformes",
+      "famille": "Nectariniidae",
+      "photo": "photos/037-souimanga-a-moustaches-mwl611wp.jpg",
+      "observations": [
+        {
+          "date": "2026-11-18",
+          "lieu": "foret-daintree",
+          "video": ""
+        }
+      ]
     }
   ],
   "top10": [
