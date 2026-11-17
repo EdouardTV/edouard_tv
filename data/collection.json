@@ -757,6 +757,23 @@
           "video": "https://vm.tiktok.com/ZN8aSmaaw/"
         }
       ]
+    },
+    {
+      "id": "emwl6ip7r",
+      "numero": 41,
+      "nom": "Grande Aigrette",
+      "nomScientifique": "Ardea alba",
+      "groupe": "Oiseaux",
+      "ordre": "Pélécaniformes",
+      "famille": "Ardeidae",
+      "photo": "photos/041-grande-aigrette-mwl6ked1.jpg",
+      "observations": [
+        {
+          "date": "2026-11-17",
+          "lieu": "julatten",
+          "video": "https://vm.tiktok.com/ZN8aSmaaw/"
+        }
+      ]
     }
   ],
   "top10": [
