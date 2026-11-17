@@ -5,7 +5,7 @@
     "tiktok": "https://www.tiktok.com/@edouard_tv",
     "youtube": "https://www.youtube.com/@edouard_tv",
     "instagram": "https://www.instagram.com/edouard_tv/",
-    "maj": "2026-11-17"
+    "maj": "2026-11-18"
   },
   "lieux": [
     {
@@ -648,6 +648,23 @@
           "date": "2026-11-16",
           "lieu": "mer-de-corail",
           "video": "https://vm.tiktok.com/ZN8a8y97g/"
+        }
+      ]
+    },
+    {
+      "id": "emwl5pxn1",
+      "numero": 35,
+      "nom": "Loriquet arc-en-ciel",
+      "nomScientifique": "Trichoglossus moluccanus",
+      "groupe": "Oiseaux",
+      "ordre": "Psittaciformes",
+      "famille": "Psittaculidae",
+      "photo": "photos/035-loriquet-arc-en-ciel-mwl5rpvb.jpg",
+      "observations": [
+        {
+          "date": "2026-11-18",
+          "lieu": "foret-daintree",
+          "video": ""
         }
       ]
     }
