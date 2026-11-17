@@ -740,6 +740,23 @@
           "video": "https://vm.tiktok.com/ZN8aSmaaw/"
         }
       ]
+    },
+    {
+      "id": "emwl6ep1z",
+      "numero": 40,
+      "nom": "Vanneau soldat",
+      "nomScientifique": "Vanellus miles",
+      "groupe": "Oiseaux",
+      "ordre": "Charadriiformes",
+      "famille": "Charadriidae",
+      "photo": "photos/040-x-mwl6gtig.jpg",
+      "observations": [
+        {
+          "date": "2026-11-17",
+          "lieu": "julatten",
+          "video": "https://vm.tiktok.com/ZN8aSmaaw/"
+        }
+      ]
     }
   ],
   "top10": [
