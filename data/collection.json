@@ -774,6 +774,23 @@
           "video": "https://vm.tiktok.com/ZN8aSmaaw/"
         }
       ]
+    },
+    {
+      "id": "emwl6l5hw",
+      "numero": 42,
+      "nom": "Aigrette garzette",
+      "nomScientifique": "Egretta garzetta",
+      "groupe": "Oiseaux",
+      "ordre": "Pélécaniformes",
+      "famille": "Ardeidae",
+      "photo": "photos/042-aigrette-garzette-mwl6mon2.jpg",
+      "observations": [
+        {
+          "date": "2026-11-17",
+          "lieu": "julatten",
+          "video": "https://vm.tiktok.com/ZN8aSmaaw/"
+        }
+      ]
     }
   ],
   "top10": [
