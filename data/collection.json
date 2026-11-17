@@ -633,6 +633,23 @@
           "video": "https://vm.tiktok.com/ZN85GNn4A/"
         }
       ]
+    },
+    {
+      "id": "emwkcxbog",
+      "numero": 34,
+      "nom": "Dugong ",
+      "nomScientifique": "Dugong dugon",
+      "groupe": "Mammifères marins",
+      "ordre": "Siréniens",
+      "famille": "Dugongidae",
+      "photo": "photos/034-dugong-mwkd008y.jpg",
+      "observations": [
+        {
+          "date": "2026-11-17",
+          "lieu": "foret-daintree",
+          "video": ""
+        }
+      ]
     }
   ],
   "top10": [
