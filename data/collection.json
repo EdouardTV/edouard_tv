@@ -808,6 +808,23 @@
           "video": "https://vm.tiktok.com/ZGdXcbpUs/"
         }
       ]
+    },
+    {
+      "id": "emwsj4gga",
+      "numero": 44,
+      "nom": "Martin-chasseur sylvain",
+      "nomScientifique": "Tanysiptera sylvia",
+      "groupe": "Oiseaux",
+      "ordre": "Coraciiformes",
+      "famille": "Alcedinidae",
+      "photo": "photos/044-martin-chasseur-sylvain-mwsj5mhd.jpg",
+      "observations": [
+        {
+          "date": "2026-11-23",
+          "lieu": "foret-daintree",
+          "video": ""
+        }
+      ]
     }
   ],
   "top10": [
