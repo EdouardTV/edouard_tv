@@ -825,6 +825,23 @@
           "video": "https://vm.tiktok.com/ZGdXcpgyE/"
         }
       ]
+    },
+    {
+      "id": "emwsj6yn1",
+      "numero": 45,
+      "nom": "Kookaburra",
+      "nomScientifique": "Dacelo novaeguineae",
+      "groupe": "Oiseaux",
+      "ordre": "Coraciiformes",
+      "famille": "Alcedinidae",
+      "photo": "photos/045-kookaburra-mwsjaa1z.jpg",
+      "observations": [
+        {
+          "date": "2026-11-23",
+          "lieu": "foret-daintree",
+          "video": ""
+        }
+      ]
     }
   ],
   "top10": [
